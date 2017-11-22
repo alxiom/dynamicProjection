@@ -4,7 +4,7 @@ Capture cam;
 
 float delta = 0.0;
 int trackerRadius = 50;
-boolean isProjection = true;
+boolean isProjection = false;
 boolean isCalibration = false;
 float[] trackCenter = {249.0, 250.0, 249.0};
 float[] trackSide = {200.0, 250.0, 249.0};
@@ -13,8 +13,7 @@ int projectionRadius = 150;
 
 void setup() {
   
-  //size(1280, 960);
-  size(1280, 720);
+  size(1280, 960);
   
   String[] cameras = Capture.list();
   int cameraIdx = 0;
