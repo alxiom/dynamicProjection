@@ -89,7 +89,7 @@ void draw() {
         }
         
         int cntU = 1;
-        while (cntU < trackerRadius && (captureIdx - cntU * width) / height > 0) {
+        while (cntU < trackerRadius && captureIdx - cntU * width > 0) {
           int captureU = cam.pixels[captureIdx - cntU * width]; 
           if (red(captureU) <= trackSide[0] && green(captureU) >= trackSide[1] && blue(captureU) >= trackSide[2]) {
             flag += 1;
@@ -99,7 +99,7 @@ void draw() {
         }
          
         int cntD = 1;
-        while (cntD < trackerRadius && (captureIdx + cntD * width) / height < (height - 1)) {
+        while (cntD < trackerRadius && captureIdx + cntD * width < height * width) {
           int captureD = cam.pixels[captureIdx + cntD * width];
           if (red(captureD) <= trackSide[0] && green(captureD) >= trackSide[1] && blue(captureD) >= trackSide[2]) {
             flag += 1;
@@ -120,9 +120,10 @@ void draw() {
     }
   }
   
-  delta += 0.1;
+  delta += 0.2;
   fill(0, 128);
   rect(0, 0, width, height);
+  int radius = 25;
   
   if (cntP != 0) {    
     pushMatrix();
@@ -130,9 +131,9 @@ void draw() {
     rotate(delta);
     noStroke();
     fill(255, 0, 0);
-    ellipse(40 * cos(0), 40 * sin(0), 10, 10);
-    ellipse(40 * cos(2 * PI / 3), 40 * sin(2 * PI / 3), 10, 10);
-    ellipse(40 * cos(4 * PI / 3), 40 * sin(4 * PI / 3), 10, 10);
+    ellipse(40 * cos(0), 40 * sin(0), radius, radius);
+    ellipse(40 * cos(2 * PI / 3), 40 * sin(2 * PI / 3), radius, radius);
+    ellipse(40 * cos(4 * PI / 3), 40 * sin(4 * PI / 3), radius, radius);
     popMatrix();
   }
 }
