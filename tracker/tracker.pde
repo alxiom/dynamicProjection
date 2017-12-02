@@ -3,11 +3,12 @@ import processing.video.*;
 Capture cam;
 
 float delta = 0.0;
+int lightRadius = 5;
 int trackerRadius = 50;
-boolean isProjection = false;
+boolean isProjection = true;
 boolean isCalibration = false;
 float[] trackCenter = {249.0, 250.0, 249.0};
-float[] trackSide = {200.0, 250.0, 249.0};
+float[] trackSide = {200.0, 200.0, 249.0};
 
 int projectionRadius = 150;
 
@@ -66,12 +67,13 @@ void draw() {
       
       if (red(capturePxl) >= trackCenter[0] && green(capturePxl) >= trackCenter[1] && blue(capturePxl) >= trackCenter[2]) {
         
+
         int flag = 0;
-        
+          
         int cntL = 1;
         while (cntL < trackerRadius && (captureIdx - cntL - 1) % width > 0) {
           int captureL = cam.pixels[captureIdx - cntL];
-          if (red(captureL) <= trackSide[0] && green(captureL) >= trackSide[1] && blue(captureL) >= trackSide[2]) {
+          if (red(captureL) <= trackSide[0] && green(captureL) <= trackSide[1] && blue(captureL) >= trackSide[2]) {
             flag += 1;
             break;
           }
@@ -80,28 +82,28 @@ void draw() {
         
         int cntR = 1;
         while (cntR < trackerRadius && (captureIdx + cntR - 1) % width < (width - 1)) {
-          int captureR = cam.pixels[captureIdx + cntR];       
-          if (red(captureR) <= trackSide[0] && green(captureR) >= trackSide[1] && blue(captureR) >= trackSide[2]) {
+          int captureR = cam.pixels[captureIdx + cntR];
+          if (red(captureR) <= trackSide[0] && green(captureR) <= trackSide[1] && blue(captureR) >= trackSide[2]) {
             flag += 1;
             break;
           }
           cntR += 1;
         }
         
-        int cntU = 1;
+        int cntU = lightRadius;
         while (cntU < trackerRadius && captureIdx - cntU * width > 0) {
           int captureU = cam.pixels[captureIdx - cntU * width]; 
-          if (red(captureU) <= trackSide[0] && green(captureU) >= trackSide[1] && blue(captureU) >= trackSide[2]) {
+          if (red(captureU) <= trackSide[0] && green(captureU) <= trackSide[1] && blue(captureU) >= trackSide[2]) {
             flag += 1;
             break;
           }
           cntU += 1;
         }
          
-        int cntD = 1;
+        int cntD = lightRadius;
         while (cntD < trackerRadius && captureIdx + cntD * width < height * width) {
           int captureD = cam.pixels[captureIdx + cntD * width];
-          if (red(captureD) <= trackSide[0] && green(captureD) >= trackSide[1] && blue(captureD) >= trackSide[2]) {
+          if (red(captureD) <= trackSide[0] && green(captureD) <= trackSide[1] && blue(captureD) >= trackSide[2]) {
             flag += 1;
             break;
           }
