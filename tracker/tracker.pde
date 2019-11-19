@@ -5,34 +5,46 @@ Capture cam;
 float delta = 0.0;
 int lightRadius = 5;
 int trackerRadius = 50;
-boolean isProjection = true;
+boolean isProjection = false;
 boolean isCalibration = false;
 float[] trackCenter = {249.0, 250.0, 249.0};
 float[] trackSide = {200.0, 200.0, 249.0};
 
 int projectionRadius = 150;
 
-void setup() {
-  
+void setup() {  
   size(1280, 960);
   
-  String[] cameras = Capture.list();
-  int cameraIdx = 0;
+  int width = 1280;
+  int height = 960;
+  int fps = 30;
   
-  if (cameras.length == 0) {
-    println("No available camera");
+  String camSetup = String.format("name=USB Camera,size=%dx%d,fps=%d", width, height, fps); 
+  int camIdx = -1;
+  String[] camList = Capture.list();
+  
+  if (camList.length == 0) {
+    println("No available cam");
     exit();
   } else {
     println("Available cameras");
-    for (int i = 0; i < cameras.length; i ++) {
-      println(i, cameras[i]);
+    for (int i = 0; i < camList.length; i ++) {
+      println(i, camList[i]);
+      if (camList[i].contains(camSetup)) {
+        camIdx = i;
+      }
     }
-    println("Selected camera");
-    println(cameras[cameraIdx]);
-    cam = new Capture(this, cameras[cameraIdx]);
-    cam.start();     
-    delay(3000);
-    smooth();
+    if (camIdx < 0) {
+      println("Mo matched cam");
+      exit();
+    } else {
+      println("Selected camera");
+      println(camList[camIdx]);
+      cam = new Capture(this, camList[camIdx]);
+      cam.start();
+      println("Start cam within 3 sec");
+      delay(3000);
+    }
   }
 }
 
@@ -41,7 +53,6 @@ void captureEvent(Capture cam) {
 }
 
 void draw() {
-  
   loadPixels();
   cam.loadPixels();
   
